@@ -3,7 +3,7 @@ package br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 
 public class NomeTestCaseUtils {
 	protected static Pattern TEST_CASE_NAME_PATTERN = Pattern.compile("^(test\\w+)(\\[([^\\]]+)\\])?$");

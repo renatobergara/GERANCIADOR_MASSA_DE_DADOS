@@ -3,8 +3,8 @@ package br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregae
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.lang.ClassUtils;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.ClassPathResource;

@@ -1,6 +1,6 @@
 package br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos.bean;
 
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 
 import br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos.ValorDosElementos;
 

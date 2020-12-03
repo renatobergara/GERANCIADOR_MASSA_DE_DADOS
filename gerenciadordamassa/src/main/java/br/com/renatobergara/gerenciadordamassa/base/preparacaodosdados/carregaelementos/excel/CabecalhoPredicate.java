@@ -4,7 +4,7 @@ import jxl.Cell;
 import jxl.CellReferenceHelper;
 import jxl.CellType;
 
-class CabecalhoPredicate implements net.sf.cglib.core.Predicate, org.apache.commons.collections.Predicate {
+class CabecalhoPredicate implements net.sf.cglib.core.Predicate, org.apache.commons.collections4.Predicate {
 	public static final CabecalhoPredicate INSTANCE = new CabecalhoPredicate();
 
 	@Override
