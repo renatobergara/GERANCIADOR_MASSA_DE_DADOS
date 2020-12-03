@@ -2,7 +2,7 @@ package br.com.renatobergara.gerenciadordamassa.exemplo.complanilha.simples;
 
 import org.junit.Test;
 
-import br.com.renatobergara.gerenciadordamassa.base.GerenciadorExcelTestCase;
+import br.com.renatobergara.gerenciadordamassa.base.GerenciadorBaseTestCase;
 import br.com.renatobergara.gerenciadordamassa.base.annotation.InjetaAutomatico;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @InjetaAutomatico
 @EqualsAndHashCode(callSuper = false)
-public class BaseComPlanilhaTest extends GerenciadorExcelTestCase {
+public class BaseComPlanilhaTest extends GerenciadorBaseTestCase {
 
 	private Repositorio modeloDeCadastro;
 

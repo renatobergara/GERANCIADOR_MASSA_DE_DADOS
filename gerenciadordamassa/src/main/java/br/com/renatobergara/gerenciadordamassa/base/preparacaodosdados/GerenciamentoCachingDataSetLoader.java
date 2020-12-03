@@ -40,9 +40,9 @@ public class GerenciamentoCachingDataSetLoader implements CarregaElementos {
 					Elementos ds = d.carregaElementos(clazz);
 					if (ds == null)
 						return NULL_DATASET;
-					return new InitializedDataSet(ds);
+					return new IniciandoElementos(ds);
 				} catch (RuntimeException e) {
-					logger.error("erro ao ler planilha da classe " + clazz, e);
+					logger.error("Erro ao ler planilha da classe " + clazz, e);
 					throw e;
 				}
 			}
@@ -53,30 +53,30 @@ public class GerenciamentoCachingDataSetLoader implements CarregaElementos {
 		return instance;
 	}
 
-	public class InitializedDataSet implements Elementos {
+	public class IniciandoElementos implements Elementos {
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 4874398918420625098L;
 		private final Map<String, TabelaDeDados> dataTableByName;
 
-		public InitializedDataSet(Elementos ds) {
-			logger.debug("Criando dataset inicializado imutável");
-			String[] tableNames = ds.getNomesTabelas();
+		public IniciandoElementos(Elementos elementos) {
+			logger.debug("Criando elementos imutáveis");
+			String[] tableNames = elementos.getNomesTabelas();
 			Builder<String, TabelaDeDados> builder = ImmutableMap.builder();
 			for (int i = 0; i < tableNames.length; i++) {
 				String tableName = tableNames[i];
 				if (tableName.startsWith("test")) {
-					builder.put(tableName, new InitializedDataTable(ds.getTabelas(tableName)));
+					builder.put(tableName, new IniciandoTabelaDeDados(elementos.getTabelas(tableName)));
 				}
 			}
 			dataTableByName = builder.build();
-			logger.debug("Criado dataset inicializado imutável, para os metodos " + dataTableByName.keySet());
+			logger.debug("Criado elementos(tabelas e linha) imutáveis, para os metodos " + dataTableByName.keySet());
 		}
 
 		@Override
-		public TabelaDeDados getTabelas(String tableName) {
-			return dataTableByName.get(tableName);
+		public TabelaDeDados getTabelas(String nomeDaTabela) {
+			return dataTableByName.get(nomeDaTabela);
 		}
 
 		@Override
@@ -90,26 +90,27 @@ public class GerenciamentoCachingDataSetLoader implements CarregaElementos {
 		}
 	}
 
-	public class InitializedDataTable implements TabelaDeDados {
+	public class IniciandoTabelaDeDados implements TabelaDeDados {
 
-		private final Map<String, LinhaDeDados> dataRowById;
+		private final Map<String, LinhaDeDados> dadosDaLinhaById;
 		private final String name;
 
-		public InitializedDataTable(TabelaDeDados dt) {
-			this.name = dt.getNome();
+		public IniciandoTabelaDeDados(TabelaDeDados tabelaDeDados) {
+			logger.debug("Criando tabelas de dados imutáveis");
+			this.name = tabelaDeDados.getNome();
 			Builder<String, LinhaDeDados> builder = ImmutableMap.builder();
-			Iterator<LinhaDeDados> it = dt.iteratorLinhas();
+			Iterator<LinhaDeDados> it = tabelaDeDados.iteratorLinhas();
 			while (it.hasNext()) {
 				LinhaDeDados dr = it.next();
-				builder.put(dr.getId(), new InitializedDataRow(dr));
+				builder.put(dr.getId(), new InicandoLinhaDeDados(dr));
 			}
-			dataRowById = builder.build();
+			dadosDaLinhaById = builder.build();
 		}
 
 		@Override
-		public LinhaDeDados EncontraLinhaPorId(String rowId) {
-			LinhaDeDados dr = dataRowById.get(rowId);
-			Preconditions.checkNotNull(dr, "Não há dr pro id " + rowId + " na tabela " + name);
+		public LinhaDeDados EncontraLinhaPorId(String idDaLinha) {
+			LinhaDeDados dr = dadosDaLinhaById.get(idDaLinha);
+			Preconditions.checkNotNull(dr, "Não há linha de dados pro id " + idDaLinha + " na tabela " + name);
 			return dr;
 		}
 
@@ -120,24 +121,26 @@ public class GerenciamentoCachingDataSetLoader implements CarregaElementos {
 
 		@Override
 		public int getQuantidadeDeLinhas() {
-			return dataRowById.values().size();
+			return dadosDaLinhaById.values().size();
 		}
 
 		@Override
 		public Iterator<LinhaDeDados> iteratorLinhas() {
-			return dataRowById.values().iterator();
+			return dadosDaLinhaById.values().iterator();
 		}
 
 	}
 
-	public class InitializedDataRow implements LinhaDeDados {
-		private final List<ValorDosElementos> dataValues;
+	public class InicandoLinhaDeDados implements LinhaDeDados {
+		private final List<ValorDosElementos> valores;
 		private final String id;
 
 		@SuppressWarnings("unchecked")
-		public InitializedDataRow(LinhaDeDados dr) {
-			dataValues = values((Iterator<ValorDosElementos>) dr.iterator());
-			id = dr.getId();
+		public InicandoLinhaDeDados(LinhaDeDados linhaDeDados) {
+			logger.debug("Criando linha de dados imutáveis");
+
+			valores = values((Iterator<ValorDosElementos>) linhaDeDados.iterator());
+			id = linhaDeDados.getId();
 		}
 
 		private List<ValorDosElementos> values(Iterator<ValorDosElementos> iterator) {
@@ -156,7 +159,7 @@ public class GerenciamentoCachingDataSetLoader implements CarregaElementos {
 
 		@Override
 		public Iterator<ValorDosElementos> iterator() {
-			return dataValues.iterator();
+			return valores.iterator();
 		}
 	}
 }

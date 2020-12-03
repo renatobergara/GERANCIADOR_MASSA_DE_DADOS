@@ -76,6 +76,7 @@ public class XLSBeans {
 	private <P> P loadSheet(Class<P> clazz, WSheet wSheet, AnnotationReader reader) throws Exception {
 
 		List<NeedPostProcess> needPostProcess = new ArrayList<NeedPostProcess>();
+		XLSBeansConfig config = new XLSBeansConfig();
 
 		// Precisamos criar uma instancia do Repositório.
 		P obj = newInstance(clazz);
@@ -85,7 +86,7 @@ public class XLSBeans {
 				for (Annotation ann : reader.getAnnotations(clazz, method)) {
 					FieldProcessor processor = FieldProcessorFactory.getProcessor(ann);
 					if (processor != null) {
-						processor.doProcess(wSheet, obj, method, ann, reader, needPostProcess);
+						processor.doProcess(wSheet, obj, method, ann, reader, config, needPostProcess);
 						break;
 					} else if (ann instanceof PostProcess) {
 						NeedPostProcess post = new NeedPostProcess(obj, method);
@@ -99,7 +100,7 @@ public class XLSBeans {
 				for (Annotation ann : reader.getAnnotations(clazz, field)) {
 					FieldProcessor processor = FieldProcessorFactory.getProcessor(ann);
 					if (processor != null) {
-						processor.doProcess(wSheet, obj, field, ann, reader, needPostProcess);
+						processor.doProcess(wSheet, obj, field, ann, reader, config, needPostProcess);
 						break;
 					}
 				}

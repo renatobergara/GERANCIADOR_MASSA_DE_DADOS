@@ -32,6 +32,7 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import net.java.amateras.xlsbeans.NeedPostProcess;
 import net.java.amateras.xlsbeans.Utils;
+import net.java.amateras.xlsbeans.XLSBeansConfig;
 import net.java.amateras.xlsbeans.XLSBeansException;
 import net.java.amateras.xlsbeans.annotation.RecordTerminal;
 import net.java.amateras.xlsbeans.processor.FieldProcessor;
@@ -49,45 +50,6 @@ import net.java.amateras.xlsbeans.xssfconverter.WSheet;
  */
 public class GerenciamentoHorizontalProcessor implements FieldProcessor {
 
-	@Override
-	public void doProcess(WSheet wSheet, Object obj, Method setter, Annotation ann, AnnotationReader reader,
-			List<NeedPostProcess> needPostProcess) throws Exception {
-
-		Class<?>[] clazzes = setter.getParameterTypes();
-		if (clazzes.length != 1) {
-			throw new GerenciadorXlsBeansException("Argumento do '" + setter.toString() + "' é inválido.");
-		} else if (List.class.isAssignableFrom(clazzes[0])) {
-			RepositorioPlanilha<?> repositorio = (RepositorioPlanilha<?>) obj;
-			List<?> value = createRecords(wSheet, (XBComponentsRecords) ann, reader, needPostProcess,
-					repositorio.getTipo(), repositorio.getPacotePlanilha(), repositorio.getClasseTeste(),
-					componentesPorPlanilha());
-			if (value != null) {
-				setter.invoke(obj, new Object[] { value });
-			}
-		} else {
-			throw new GerenciadorXlsBeansException("Argumento do '" + setter.toString() + "' é inválido.");
-		}
-
-	}
-
-	@Override
-	public void doProcess(WSheet wSheet, Object obj, Field field, Annotation ann, AnnotationReader reader,
-			List<NeedPostProcess> needPostProcess) throws Exception {
-		Class<?> clazz = field.getType();
-		if (List.class.isAssignableFrom(clazz)) {
-			RepositorioPlanilha<?> repositorio = (RepositorioPlanilha<?>) obj;
-			List<?> value = createRecords(wSheet, (XBComponentsRecords) ann, reader, needPostProcess,
-					repositorio.getTipo(), repositorio.getPacotePlanilha(), repositorio.getClasseTeste(),
-					componentesPorPlanilha());
-			if (value != null) {
-				field.setAccessible(true);
-				field.set(obj, value);
-			}
-		} else {
-			throw new GerenciadorXlsBeansException("Argumento do '" + field.toString() + "' é inválido.");
-		}
-	}
-
 	private List<?> createRecords(WSheet wSheet, XBComponentsRecords records, AnnotationReader reader,
 			List<NeedPostProcess> needPostProcess, Class<?> clazz, Package pacote, Class<?> classeTeste,
 			LoadingCache<ChaveTabelaComponente, List<?>> elementosComponentesPorTipo) throws Exception {
@@ -104,7 +66,7 @@ public class GerenciamentoHorizontalProcessor implements FieldProcessor {
 			initRow = records.headerRow();
 		} else {
 			try {
-				WCell labelCell = Utils.getCell(wSheet, tableLabel, 0);
+				WCell labelCell = Utils.getCell(wSheet, tableLabel, 0, new XLSBeansConfig());
 				initColumn = labelCell.getColumn();
 				initRow = labelCell.getRow() + records.bottom();
 			} catch (XLSBeansException ex) {
@@ -394,5 +356,44 @@ public class GerenciamentoHorizontalProcessor implements FieldProcessor {
 		final Field field;
 		final Package pacote;
 		final Class<?> classeTeste;
+	}
+
+	@Override
+	public void doProcess(WSheet wSheet, Object obj, Method setter, Annotation ann, AnnotationReader reader,
+			XLSBeansConfig arg5, List<NeedPostProcess> needPostProcess) throws Exception {
+
+		Class<?>[] clazzes = setter.getParameterTypes();
+		if (clazzes.length != 1) {
+			throw new GerenciadorXlsBeansException("Argumento do '" + setter.toString() + "' é inválido.");
+		} else if (List.class.isAssignableFrom(clazzes[0])) {
+			RepositorioPlanilha<?> repositorio = (RepositorioPlanilha<?>) obj;
+			List<?> value = createRecords(wSheet, (XBComponentsRecords) ann, reader, needPostProcess,
+					repositorio.getTipo(), repositorio.getPacotePlanilha(), repositorio.getClasseTeste(),
+					componentesPorPlanilha());
+			if (value != null) {
+				setter.invoke(obj, new Object[] { value });
+			}
+		} else {
+			throw new GerenciadorXlsBeansException("Argumento do '" + setter.toString() + "' é inválido.");
+		}
+
+	}
+
+	@Override
+	public void doProcess(WSheet wSheet, Object obj, Field field, Annotation ann, AnnotationReader reader,
+			XLSBeansConfig arg5, List<NeedPostProcess> needPostProcess) throws Exception {
+		Class<?> clazz = field.getType();
+		if (List.class.isAssignableFrom(clazz)) {
+			RepositorioPlanilha<?> repositorio = (RepositorioPlanilha<?>) obj;
+			List<?> value = createRecords(wSheet, (XBComponentsRecords) ann, reader, needPostProcess,
+					repositorio.getTipo(), repositorio.getPacotePlanilha(), repositorio.getClasseTeste(),
+					componentesPorPlanilha());
+			if (value != null) {
+				field.setAccessible(true);
+				field.set(obj, value);
+			}
+		} else {
+			throw new GerenciadorXlsBeansException("Argumento do '" + field.toString() + "' é inválido.");
+		}
 	}
 }

@@ -16,6 +16,9 @@ import br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.utils.Nom
 import br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.utils.TesteCaseInfo;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class ComportamentoOrientadoADadosTestCaseImpl extends TestCase
 		implements ComportamentoOrientadoADadosJUnitTestCase {
@@ -23,27 +26,43 @@ public abstract class ComportamentoOrientadoADadosTestCaseImpl extends TestCase
 
 	String fullName;
 
+	@Getter(value = AccessLevel.PUBLIC)
+	@Setter
+	private String nomeCenario;
+
+	@Getter(value = AccessLevel.PUBLIC)
+	@Setter
+	private String descricaoCenarioCompleto;
+
+	@Getter(value = AccessLevel.PUBLIC)
+	@Setter
+	private String resultadoEsperado;
+
 	ComportamentoOrientadoADados behaviour;
 
 	@Override
 	public final int countTestCases() {
+		logger.info("Quantidade de casos de testes: " + getComportamento().countTestCases());
 		return getComportamento().countTestCases();
 	}
 
 	@Override
 	public final void run(TestResult resultado) {
+		logger.info("Iniciando a execução do teste.");
 		getComportamento().run(resultado, this);
 	}
 
 	@Override
 	@Before
 	public final void setUp() throws Exception {
+		logger.info("Iniciando o setUP do teste.");
 		getComportamento().setUp(this);
 	}
 
 	@Override
 	@After
 	public final void tearDown() throws Exception {
+		logger.info("Finalizando o tearDown do teste.");
 		getComportamento().tearDown(this);
 	}
 
@@ -66,6 +85,8 @@ public abstract class ComportamentoOrientadoADadosTestCaseImpl extends TestCase
 
 	@Override
 	public final void setName(String nome) {
+		logger.info("Nome do Método[linha]: " + nome);
+
 		if (!StringUtils.equals(nome, this.fullName)) {
 			TesteCaseInfo info = NomeTestCaseUtils.parseNomeTestCase(nome);
 			super.setName(info.getNomeDoMetodo());
@@ -138,4 +159,5 @@ public abstract class ComportamentoOrientadoADadosTestCaseImpl extends TestCase
 	public PropertyEditor[] getCustomPropertyEditors() {
 		return null;
 	}
+
 }
