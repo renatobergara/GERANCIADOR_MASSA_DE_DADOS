@@ -1,7 +1,9 @@
 package br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos;
 
-public abstract interface ValorDosElementos {
-	public abstract String getNome();
+import br.com.renatobergara.gerenciadordamassa.base.exception.DadosExcelException;
 
-	public abstract Object getValor();
+public interface ValorDosElementos {
+	public String getNome();
+
+	public Object getValor() throws DadosExcelException;
 }

@@ -11,6 +11,7 @@ import org.apache.commons.collections4.iterators.TransformIterator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
+import br.com.renatobergara.gerenciadordamassa.base.exception.DadosExcelException;
 import br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos.LinhaDeDados;
 import br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos.TabelaDeDados;
 import jxl.Cell;
@@ -70,7 +71,7 @@ class DadosDaTabelaExcelAdapter implements TabelaDeDados {
 		return -1;
 	}
 
-	public DadosDaTabelaExcelAdapter(Sheet sheet) {
+	public DadosDaTabelaExcelAdapter(Sheet sheet) throws DadosExcelException {
 		this.sheet = sheet;
 
 		Cell[] colunas = sheet.getColumn(0);

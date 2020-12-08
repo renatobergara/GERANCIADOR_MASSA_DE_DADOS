@@ -2,6 +2,7 @@ package br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.cargaded
 
 import org.apache.commons.lang3.Validate;
 
+import br.com.renatobergara.gerenciadordamassa.base.exception.DadosExcelException;
 import br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos.CarregaElementos;
 import br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos.Elementos;
 import br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos.LinhaDeDados;
@@ -18,13 +19,19 @@ public class CarregaDadosImpl implements CarregaDados {
 	}
 
 	public TabelaDeDados carregarTabelas(TestCase testCase, String NomeDoMetodo) {
-		Elementos elementos = this.carregaElemento.carregaElementos(testCase.getClass());
+		Elementos elementos = null;
+		TabelaDeDados dadosDaTabela = null;
 
-		if (elementos == null) {
-			return null;
+		try {
+			elementos = this.carregaElemento.carregaElementos(testCase.getClass());
+			if (elementos == null) {
+				return null;
+			}
+
+			dadosDaTabela = elementos.getTabelas(NomeDoMetodo);
+		} catch (DadosExcelException e) {
+			e.printStackTrace();
 		}
-
-		TabelaDeDados dadosDaTabela = elementos.getTabelas(NomeDoMetodo);
 
 		return dadosDaTabela;
 	}

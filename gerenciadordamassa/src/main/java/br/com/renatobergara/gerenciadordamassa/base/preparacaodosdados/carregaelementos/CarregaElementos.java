@@ -1,5 +1,7 @@
 package br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos;
 
-public abstract interface CarregaElementos {
-	public abstract Elementos carregaElementos(Class<?> parametro);
+import br.com.renatobergara.gerenciadordamassa.base.exception.DadosExcelException;
+
+public interface CarregaElementos {
+	public Elementos carregaElementos(Class<?> parametro) throws DadosExcelException;
 }

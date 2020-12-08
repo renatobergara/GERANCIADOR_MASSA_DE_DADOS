@@ -2,8 +2,8 @@ package br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregae
 
 import java.util.Iterator;
 
-public abstract interface LinhaDeDados {
-	public abstract String getId();
+public interface LinhaDeDados {
+	public String getId();
 
-	public abstract Iterator<?> iterator();
+	public Iterator<?> iterator();
 }

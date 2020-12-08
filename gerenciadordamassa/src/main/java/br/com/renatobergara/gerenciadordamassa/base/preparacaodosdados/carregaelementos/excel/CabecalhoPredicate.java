@@ -1,9 +1,9 @@
 package br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos.excel;
 
 import jxl.Cell;
-import jxl.CellReferenceHelper;
 import jxl.CellType;
 
+@SuppressWarnings("rawtypes")
 class CabecalhoPredicate implements net.sf.cglib.core.Predicate, org.apache.commons.collections4.Predicate {
 	public static final CabecalhoPredicate INSTANCE = new CabecalhoPredicate();
 
@@ -21,8 +21,7 @@ class CabecalhoPredicate implements net.sf.cglib.core.Predicate, org.apache.comm
 		if (type == CellType.EMPTY) {
 			return false;
 		}
+		return false;
 
-		throw new DadosExcelException("Tipo de célula inválido para o cabeçalho: "
-				+ CellReferenceHelper.getCellReference(cell.getColumn(), cell.getRow()));
 	}
 }

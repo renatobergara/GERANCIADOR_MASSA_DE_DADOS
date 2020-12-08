@@ -18,6 +18,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 import br.com.renatobergara.gerenciadordamassa.base.annotation.InjetaAutomatico;
+import br.com.renatobergara.gerenciadordamassa.base.exception.DadosExcelException;
 import br.com.renatobergara.gerenciadordamassa.base.exception.GerenciadorTestException;
 import br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.cargadedados.CarregaDados;
 import br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos.LinhaDeDados;
@@ -201,7 +202,8 @@ public class LinhaComportamentoOrientadoADados extends ComportamentoOrientadoADa
 		EscopoLinhaDoTeste.iniciaALinhaDoTeste(testCase.getName());
 	}
 
-	private List<Campo> orgazinaTipos(final LinhaDeDados linhas, final BeanWrapper beanWrapper) {
+	private List<Campo> orgazinaTipos(final LinhaDeDados linhas, final BeanWrapper beanWrapper)
+			throws DadosExcelException {
 		Preconditions.checkNotNull(linhas);
 		List<Campo> elementos = Lists.newArrayList();
 		for (final Iterator<?> iter = linhas.iterator(); iter.hasNext();) {

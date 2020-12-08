@@ -5,6 +5,7 @@ import java.util.Iterator;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 
+import br.com.renatobergara.gerenciadordamassa.base.exception.DadosExcelException;
 import br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos.Elementos;
 import br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos.TabelaDeDados;
 import jxl.Sheet;
@@ -76,6 +77,12 @@ class ElementosExcelAdapter implements Elementos {
 	}
 
 	protected TabelaDeDados createDataTableAdapter(Sheet sheet) {
-		return new DadosDaTabelaExcelAdapter(sheet);
+		try {
+			return new DadosDaTabelaExcelAdapter(sheet);
+		} catch (DadosExcelException e) {
+			e.printStackTrace();
+
+		}
+		return null;
 	}
 }

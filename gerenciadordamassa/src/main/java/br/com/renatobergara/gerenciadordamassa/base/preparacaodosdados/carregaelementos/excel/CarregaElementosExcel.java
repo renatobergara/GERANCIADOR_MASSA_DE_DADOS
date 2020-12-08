@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.ClassPathResource;
 
+import br.com.renatobergara.gerenciadordamassa.base.exception.DadosExcelException;
 import br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos.CarregaElementos;
 import br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos.Elementos;
 import jxl.Workbook;
@@ -21,7 +22,7 @@ public class CarregaElementosExcel implements CarregaElementos {
 	protected String encoding = "ISO-8859-1";
 
 	@Override
-	public Elementos carregaElementos(Class<?> clazz) {
+	public Elementos carregaElementos(Class<?> clazz) throws DadosExcelException {
 		Validate.notNull(clazz, "O argumento Clazz não pode ser vazio.");
 
 		String shortName = ClassUtils.getShortClassName(clazz);

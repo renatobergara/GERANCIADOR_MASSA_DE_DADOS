@@ -1,5 +1,6 @@
 package br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos.excel;
 
+import br.com.renatobergara.gerenciadordamassa.base.exception.DadosExcelException;
 import br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos.ValorDosElementos;
 import jxl.BooleanCell;
 import jxl.Cell;
@@ -23,7 +24,7 @@ class ValorDosElementosExcelAdapter implements ValorDosElementos {
 	}
 
 	@Override
-	public Object getValor() {
+	public Object getValor() throws DadosExcelException {
 		if (this.cell == null) {
 			return null;
 		}

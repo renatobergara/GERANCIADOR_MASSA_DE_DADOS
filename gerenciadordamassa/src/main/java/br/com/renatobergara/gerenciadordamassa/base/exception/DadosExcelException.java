@@ -1,6 +1,6 @@
-package br.com.renatobergara.gerenciadordamassa.base.preparacaodosdados.carregaelementos.excel;
+package br.com.renatobergara.gerenciadordamassa.base.exception;
 
-public class DadosExcelException extends RuntimeException {
+public class DadosExcelException extends Exception {
 	private static final long serialVersionUID = 3979265828812436023L;
 
 	public DadosExcelException() {
